@@ -1,0 +1,146 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#1264a3">
+<title>PORTO FACEBOOK</title>
+<style>
+:root{--blue:#1264a3;--dark:#102a43;--bg:#f3f6fa;--card:#fff;--muted:#65758b;--line:#e4eaf1}
+*{box-sizing:border-box}body{margin:0;font-family:system-ui,-apple-system,"Segoe UI",Tahoma,Arial,sans-serif;background:var(--bg);color:var(--dark)}
+header{background:linear-gradient(120deg,#0d477a,#1684c7);color:white;padding:24px 18px 28px}
+.wrap{max-width:980px;margin:auto;padding:0 14px}h1{margin:0;font-size:26px}header p{margin:7px 0 0;color:#e5f3ff}
+main{padding:18px 0 40px}.stats{display:grid;grid-template-columns:repeat(5,1fr);gap:10px;margin-bottom:16px}
+.card,.panel{background:var(--card);border:1px solid var(--line);border-radius:15px;padding:15px;box-shadow:0 3px 12px #102a4309}
+.stat small{color:var(--muted)}.stat strong{display:block;font-size:25px;margin-top:5px}
+.panel{margin-bottom:15px}.panel h2{font-size:18px;margin:0 0 13px}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+label{display:block;font-size:13px;color:var(--muted);margin-bottom:5px}
+input,select,textarea{width:100%;padding:11px;border:1px solid #cfd9e4;border-radius:10px;background:white;font:inherit;color:var(--dark)}
+button{border:0;border-radius:10px;padding:11px 16px;background:var(--blue);color:white;font:inherit;font-weight:650;cursor:pointer}
+button.secondary{background:#eaf2f9;color:var(--blue)}button.danger{background:#fff0f0;color:#b42318}
+.actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}
+table{width:100%;border-collapse:collapse;min-width:650px}th,td{text-align:right;padding:10px;border-bottom:1px solid var(--line);font-size:13px}th{color:var(--muted);font-weight:650}
+.table-wrap{overflow:auto}.post-title{font-weight:700}.post-link{color:var(--blue);text-decoration:none}
+td:last-child button{white-space:nowrap;padding:9px 12px;font-size:12px}.empty{text-align:center;color:var(--muted);padding:24px}
+.note{font-size:12px;color:var(--muted);line-height:1.7}
+.badge{display:inline-block;background:#e9f6ef;color:#167447;padding:3px 8px;border-radius:20px;font-size:11px}
+footer{text-align:center;color:var(--muted);font-size:12px;padding:10px}
+@media(max-width:850px){.stats{grid-template-columns:repeat(3,1fr)}}
+@media(max-width:650px){.stats{grid-template-columns:repeat(2,1fr)}.grid{grid-template-columns:1fr}h1{font-size:23px}.panel{padding:12px}}
+</style>
+</head>
+<body>
+<header><div class="wrap"><h1>PORTO FACEBOOK</h1><p>لوحة شخصية لمتابعة نمو صفحتك ومنشوراتك بشكل طبيعي</p></div></header>
+<main class="wrap">
+<section class="panel">
+<h2>الصفحة المرتبطة بالمشروع</h2>
+<div class="grid">
+ <div><label>اسم الصفحة</label><div class="post-title">Gaming-world</div><a class="post-link" id="pageLink" href="https://www.facebook.com/share/1EVuwjEA8i/" target="_blank" rel="noopener">فتح صفحة Facebook ↗</a></div>
+ <div><label>عدد المتابعين الحالي</label><div class="post-title"><span id="currentFollowers">989</span> متابعاً <span class="badge">آخر تسجيل</span></div><p class="note" id="currentFollowersDate">آخر تحديث: 2026-11-16</p></div>
+ <div><label>المتابعون عند بداية المشروع</label><div class="post-title"><span id="baselineFollowers">989</span> متابعاً <span class="badge">خط البداية</span></div></div>
+ <div style="grid-column:1/-1"><label for="pageUrl">رابط صفحة Facebook</label><input id="pageUrl" type="url" placeholder="https://www.facebook.com/..."><div class="actions"><button id="savePageUrl" type="button">حفظ رابط الصفحة</button></div><p class="note" id="pageUrlStatus">الرابط محفوظ على هذا الجهاز.</p></div>
+</div>
+<p class="note">تم اعتماد الأرقام الظاهرة في صورة الصفحة بتاريخ 16 نونبر 2026. يمكن تحديث عدد المتابعين يدوياً عند تغيره.</p>
+</section>
+<section class="stats">
+ <div class="card stat"><small>المنشورات المسجلة</small><strong id="countPosts">0</strong></div>
+ <div class="card stat"><small>مجموع المشاهدات</small><strong id="sumViews">0</strong></div>
+ <div class="card stat"><small>مجموع التفاعلات</small><strong id="sumEng">0</strong></div>
+ <div class="card stat"><small>مجموع المشاركات</small><strong id="sumShares">0</strong></div>
+ <div class="card stat"><small>الزيادة منذ البداية</small><strong id="followerGrowth">0</strong><small id="followerGrowthPercent">0% نمو</small></div>
+</section>
+<section class="panel">
+<h2>إضافة منشور أو Reel</h2>
+<form id="postForm">
+ <div class="grid">
+  <div><label for="title">اسم المنشور / وصف مختصر</label><input id="title" required placeholder="مثلاً: فيديو جديد عن ..."></div>
+  <div><label for="url">رابط المنشور على Facebook</label><input id="url" type="url" required placeholder="https://www.facebook.com/..."></div>
+  <div><label for="kind">النوع</label><select id="kind"><option>Reel</option><option>منشور</option><option>فيديو</option><option>صورة</option></select></div>
+  <div><label for="date">تاريخ النشر</label><input id="date" type="date"></div>
+ </div>
+ <div class="actions"><button type="submit">+ إضافة المنشور</button></div>
+</form>
+</section>
+<section class="panel">
+<h2>تسجيل الإحصائيات</h2>
+<p class="note">اختَر منشوراً لتحميل أرقامه المسجلة تلقائياً، ثم حدّثها حسب إحصائيات Facebook. يتم حفظها على هذا الجهاز فقط.</p>
+<div class="grid">
+ <div><label for="pickPost">المنشور</label><select id="pickPost"><option value="">أضف منشوراً أولاً</option></select></div>
+ <div><label for="views">المشاهدات</label><input id="views" type="number" min="0" value="0"></div>
+ <div><label for="comments">التعليقات</label><input id="comments" type="number" min="0" value="0"></div>
+ <div><label for="reactions">التفاعلات</label><input id="reactions" type="number" min="0" value="0"></div>
+ <div><label for="shares">المشاركات</label><input id="shares" type="number" min="0" value="0"></div>
+ </div>
+ <div class="actions"><button id="saveStats" type="button">حفظ الإحصائيات</button></div>
+</section>
+<section class="panel">
+<h2>منشوراتي ومتابعة الأداء</h2>
+<div class="actions" style="margin:0 0 12px"><button id="deleteAllPosts" type="button" class="danger">حذف جميع المنشورات القديمة</button></div>
+<div class="table-wrap"><table><thead><tr><th>المنشور</th><th>النوع</th><th>المشاهدات</th><th>التعليقات</th><th>التفاعلات</th><th>المشاركات</th><th>إجراء</th></tr></thead><tbody id="postsBody"><tr><td colspan="7" class="empty">لا توجد منشورات بعد. أضف أول رابط للبدء.</td></tr></tbody></table></div>
+</section>
+<section class="panel">
+<h2>متابعة نمو الصفحة</h2>
+<div class="grid">
+ <div><label for="followers">عدد المتابعين الحالي</label><input id="followers" type="number" min="0" value="989" placeholder="مثلاً 1250"></div>
+ <div><label for="fDate">تاريخ تسجيل العدد (اختَر تاريخ اليوم للتحديث الحالي)</label><input id="fDate" type="date"></div>
+ </div>
+ <div class="actions"><button id="saveFollowers" type="button">حفظ عدد المتابعين</button><button id="export" type="button" class="secondary">تصدير نسخة احتياطية</button><button id="importBtn" type="button" class="secondary">استيراد نسخة</button><input id="importFile" type="file" accept="application/json" hidden></div>
+ <p id="fHistory" class="note">لم يتم تسجيل عدد المتابعين بعد.</p>
+</section>
+<p class="note">تنبيه: هذه نسخة تجريبية شخصية. لا تطلب كلمة مرور Facebook ولا تنفذ مشاهدات أو إعجابات آلية. الأرقام تُسجَّل يدوياً، والبيانات محفوظة محلياً في متصفح هذا الجهاز.</p>
+</main>
+<footer>PORTO FACEBOOK · نسخة تجريبية مستقلة عن PORTO SMM</footer>
+<script>
+const $=id=>document.getElementById(id);
+const KEY='porto_facebook_v1';
+const PAGE_KEY='porto_facebook_page_url';
+const DEFAULT_PAGE_URL='https://www.facebook.com/share/1EVuwjEA8i/';
+let pageUrl=localStorage.getItem(PAGE_KEY)||DEFAULT_PAGE_URL;
+let data=load();
+function load(){try{const d=JSON.parse(localStorage.getItem(KEY))||{posts:[],followers:[]};if(!Array.isArray(d.posts))d.posts=[];if(!Array.isArray(d.followers))d.followers=[];if(d.followers.length===0)d.followers.push({count:989,date:'2026-11-16'});return d}catch(e){return {posts:[],followers:[{count:989,date:'2026-11-16'}]}}}
+function persist(){localStorage.setItem(KEY,JSON.stringify(data));render()}
+function num(v){return Math.max(0,Number(v)||0)}
+function fmt(v){return num(v).toLocaleString('en-US')}
+function render(){
+ $('pageUrl').value=pageUrl;
+ $('pageLink').href=pageUrl;
+ $('countPosts').textContent=fmt(data.posts.length);
+ $('sumViews').textContent=fmt(data.posts.reduce((s,p)=>s+num(p.views),0));
+ $('sumEng').textContent=fmt(data.posts.reduce((s,p)=>s+num(p.comments)+num(p.reactions),0));
+ $('sumShares').textContent=fmt(data.posts.reduce((s,p)=>s+num(p.shares),0));
+ const selected=$('pickPost').value;
+ $('pickPost').innerHTML=data.posts.length?data.posts.map(p=>`<option value="${p.id}">${esc(p.title)}</option>`).join(''):'<option value="">أضف منشوراً أولاً</option>';
+ if(data.posts.some(p=>p.id===selected)) $('pickPost').value=selected;
+ $('postsBody').innerHTML=data.posts.length?data.posts.map(p=>`<tr><td><div class="post-title">${esc(p.title)}</div><a class="post-link" href="${esc(p.url)}" target="_blank" rel="noopener">فتح المنشور ↗</a></td><td>${esc(p.kind)}</td><td>${fmt(p.views)}</td><td>${fmt(p.comments)}</td><td>${fmt(p.reactions)}</td><td>${fmt(p.shares)}</td><td><button class="danger" type="button" data-delete-post="${esc(p.id)}">🗑 حذف هذا المنشور</button></td></tr>`).join(''):'<tr><td colspan="7" class="empty">لا توجد منشورات بعد. أضف أول رابط للبدء.</td></tr>';
+ const last=data.followers.slice().sort((a,b)=>a.date.localeCompare(b.date)).at(-1);
+ if(last && document.activeElement!==$('followers')) $('followers').value=last.count;
+ if(!$('fDate').value) $('fDate').value=new Date().toISOString().slice(0,10);
+ const baseline=data.followers.length?num(data.followers.slice().sort((a,b)=>a.date.localeCompare(b.date))[0].count):989;
+ $('currentFollowers').textContent=fmt(last?.count ?? baseline);
+ $('currentFollowersDate').textContent='آخر تحديث: '+(last?.date ?? 'لا يوجد تسجيل');
+ $('baselineFollowers').textContent=fmt(baseline);
+ const growth=num(last?.count)-baseline;
+ $('followerGrowth').textContent=(growth>=0?'+':'')+fmt(growth);
+ const growthPercent=baseline>0?(growth/baseline)*100:0;
+ $('followerGrowthPercent').textContent=(growthPercent>=0?'+':'')+growthPercent.toFixed(1)+'% مقارنة ببداية المشروع';
+ $('fHistory').textContent=last?`آخر تسجيل: ${fmt(last.count)} متابع · ${last.date} | خط البداية: ${fmt(baseline)} | عدد السجلات: ${data.followers.length}`:'لم يتم تسجيل عدد المتابعين بعد.';
+ document.querySelectorAll('[data-delete-post]').forEach(btn=>btn.onclick=()=>removePost(btn.getAttribute('data-delete-post')));
+}
+function esc(s){return String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
+$('savePageUrl').onclick=()=>{const url=$('pageUrl').value.trim();if(!/^https:\/\/(www\.)?facebook\.com\//i.test(url)){alert('أدخل رابط صفحة Facebook صحيحاً يبدأ بـ https://www.facebook.com/');return}pageUrl=url;localStorage.setItem(PAGE_KEY,pageUrl);$('pageLink').href=pageUrl;$('pageUrlStatus').textContent='تم حفظ رابط الصفحة بنجاح.';alert('تم حفظ رابط الصفحة')};
+$('postForm').addEventListener('submit',e=>{e.preventDefault();const url=$('url').value.trim();if(!/^https:\/\/(www\.)?(facebook\.com|fb\.watch)\//i.test(url)){alert('أدخل رابط Facebook صحيحاً يبدأ بـ https://');return}
+data.posts.unshift({id:Date.now().toString(),title:$('title').value.trim(),url,kind:$('kind').value,date:$('date').value,views:0,comments:0,reactions:0,shares:0});e.target.reset();persist();loadSelectedStats()});
+function loadSelectedStats(){const p=data.posts.find(x=>x.id===$('pickPost').value);if(!p){['views','comments','reactions','shares'].forEach(k=>$(k).value=0);return}['views','comments','reactions','shares'].forEach(k=>$(k).value=num(p[k]));}
+$('pickPost').addEventListener('change',loadSelectedStats);
+$('saveStats').onclick=()=>{const p=data.posts.find(x=>x.id===$('pickPost').value);if(!p){alert('أضف منشوراً واختره أولاً');return}['views','comments','reactions','shares'].forEach(k=>p[k]=num($(k).value));persist();alert('تم حفظ الإحصائيات')};
+$('saveFollowers').onclick=()=>{const raw=$('followers').value.trim();if(raw===''){alert('أدخل عدد المتابعين الحالي');return}const count=Math.floor(Number(raw));if(!Number.isFinite(count)||count<0){alert('أدخل رقماً صحيحاً');return}const date=$('fDate').value||new Date().toISOString().slice(0,10);const idx=data.followers.findIndex(x=>x.date===date);if(idx>=0)data.followers[idx].count=count;else data.followers.push({count,date});data.followers.sort((a,b)=>a.date.localeCompare(b.date));try{localStorage.setItem(KEY,JSON.stringify(data));const check=JSON.parse(localStorage.getItem(KEY)||'{}');if(!check.followers||!check.followers.some(x=>x.date===date&&Number(x.count)===count))throw Error('verify');$('followers').value=String(count);$('fHistory').textContent=`تم حفظ ${fmt(count)} متابع بتاريخ ${date}. إجمالي السجلات: ${data.followers.length}`;render();$('followers').value=String(count);$('fDate').value=date;alert('تم حفظ العدد بنجاح بتاريخ '+date)}catch(e){alert('تعذر حفظ العدد في هذا المتصفح. تأكد من فتح الملف في نفس المتصفح وعدم استخدام وضع التصفح الخفي.')}};
+$('deleteAllPosts').onclick=()=>{if(!data.posts.length){alert('لا توجد منشورات لحذفها');return}if(confirm('هل أنت متأكد من حذف جميع المنشورات القديمة؟ لا يمكن التراجع عن هذا الحذف.')){data.posts=[];persist();loadSelectedStats();alert('تم حذف جميع المنشورات')}};
+$('export').onclick=()=>{const blob=new Blob([JSON.stringify(data,null,2)],{type:'application/json'});const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='porto-facebook-backup.json';a.click();URL.revokeObjectURL(a.href)};
+$('importBtn').onclick=()=>$('importFile').click();
+$('importFile').onchange=async e=>{const f=e.target.files[0];if(!f)return;try{const d=JSON.parse(await f.text());if(!Array.isArray(d.posts)||!Array.isArray(d.followers))throw Error();data=d;persist();alert('تم استيراد النسخة')}catch(err){alert('ملف النسخة غير صالح')}e.target.value=''};
+window.removePost=id=>{if(confirm('هل تريد حذف هذا المنشور نهائياً؟')){data.posts=data.posts.filter(p=>p.id!==id);persist()}};
+render();
+loadSelectedStats();
+</script>
+</body></html>
